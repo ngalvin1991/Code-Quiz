@@ -14,10 +14,7 @@
 // variables for functions
 var answerIsCorrect = 0;
 var questionNumber = 0;
-var totalScore = 0;
 var questionIndex = 0;
-var gameOver 
-var initialNumMax = 3;
 var timeId;
 
 var questionsEl = document.querySelector("#questions");
@@ -31,7 +28,7 @@ var clearHs = document.querySelector("#clear");
 
 
 var startQuiz = function () {
-    timeId = setInterval(1000);
+    timeId = setInterval(clockCountDown, 1000);
     timerEl.textContent = 180;
     var mainPage = document.getElementById("start-screen");
     mainPage.setAttribute("class", "hide");
@@ -39,6 +36,8 @@ var startQuiz = function () {
     giveQuestion ()
 }
 
+//creation of answer list 
+// This function loops through the array of questions and answers. 
 function giveQuestion () {
     var giveQuestion = quizQuestions[questionIndex];
     var questionEl = document.getElementById("question-title")
@@ -54,6 +53,8 @@ function giveQuestion () {
     });
 }
 
+//This function checks if the user has given the correct answer
+// if they do not give the right answer then time will be deducted 
 function clickQuestion () {
     if (this.value !== question[questionIndex].correctAnswerIndex) {
         time -= 10;
@@ -78,6 +79,20 @@ function clickQuestion () {
     }
 }
 
+//This function ends the quiz by removing the questions 
+// stopping the tiimer and showing the user the final score.
+function endQuiz () {
+    clearInterval(timeId);
+    var finalScreenEl = document.getElementById("end-screen");
+    finalScreenEl.removeAttribute("class");
+    var totalScoreEl = document.getElementById("final-score");
+    totalScoreEl.textContent = time;
+    questionsEl.setAttribute("class", "hide");
+    
+}
+
+//This function ends the quiz if the timer gets to 0. the user will then have to start the quiz
+//again. 
 function clockCountDown () {
     time--; 
     timerEl.textContent = time;
@@ -86,33 +101,17 @@ function clockCountDown () {
     }
 }
 
+//This function saves the users name and score in local storage. 
+function saveHighScores () {
+    var initials = initialsEl.value.trim();
+    if (initials !== "") {
+        var highscore = JSON.parse(window.localStorage.getItem("highscore")) || [];
+        var yourScore  = {
+            score: time, 
+            name: initials
+        };
+        highscore.push(yourScore);
+        window.localStorage.setItem("highscore", JSON.stringify(highscore));
+    }
+}
 
-
-// //The timer will begin when the start button is pressed. 
-// var timeLength = 180;
-// function startQuiz() {
-//     questionIndex = 0;
-//     timeLength = 180;
-//     timer.textContent = timeLength;
-
-//     var startTimer = setInterval(function() {
-//         timeLength --;
-//         timer.textContent = timeLength;
-//         if (timeLength <= 0) {
-//             clearInterval(startTimer)
-//             if (questionIndex < quizQuestions - 1) {
-//                 gameOver ();
-//             }
-//         }
-//     }, 1000);
-
-//     seeQuiz() 
-// };
-
-// function seeQuiz() {
-//     anotherQuestion ();
-// }
-
-// function nextQuestion () {
-// questionTitle.textContent = quizQuestions[questionIndex].question;
-// }   
