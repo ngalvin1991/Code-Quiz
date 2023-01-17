@@ -16,6 +16,7 @@ var questionNumber = 0;
 var totalTime = 180;
 var timeId;
 var scoresArr = [];
+var remainingQuestions = questions.length;
 
 
 var startBtn = document.querySelector("#start");
@@ -28,6 +29,8 @@ var finalScreen = document.querySelector("#end-screen");
 var finalScore = document.querySelector("#final-score");
 var initialsEl = document.querySelector("#intials");
 var submitBtn = document.querySelector("submit");
+var endScreen = document.querySelector("#end-screen")
+
 
 
 function timeRemaining () {
@@ -53,8 +56,43 @@ function giveQuestion () {
     });   
     }
 
-    
+function startGame () {
+    choices.addEventListener("click", function (game) {
+        var gameTime = game.target;
+        if ((gameTime.parentElement = choices)) {
+            for (var i = 0; i < questions[questionNumber].correctAnswerIndex.length; i++) {
+            if (Element.textContent === questions[questionNumber].correctAnswerIndex[i].text) {
+                var theAnswer = questions[questionNumber].correctAnswerIndex[i];
+            }
+            }
+            if (theAnswer === correctAnswerIndex) {
+                questionNumber++;
+                remainingQuestions--;
+                if (remainingQuestions > 0 && totalTime > 0) {
+                    giveQuestion ();
+                }else {
+                    endGame();
+                }
+            } else if (theAnswer === "") {
+                totalTime = totalTime - 10;
+                questionNumber++;
+                remainingQuestions--;
+                if (remainingQuestions > 0 && totalTime > 0) {
+                    giveQuestion ();
+                } else {
+                    endGame ();
+                }
+            }
+        }
+    });
+}    
 
+function endGame () {
+    questDiv.setAttribute("class", "hide");
+    endScreen.removeAttribute("class");
+    finalScore.innerHTML = totalTime;
+    totalTime = 1;
+}
 
 // function giveQuestion() {
 //     var currentQuestion = quizQuestions[questionNumber];
@@ -112,10 +150,10 @@ function giveQuestion () {
 // }
 
 
-// startButton.addEventListener("click", function() {
-//     time();
-//     startScreen.setAttribute("class", "hide");
-//     questDiv.removeAttribute("class");
-//     giveQuestion();
-    
-// });
+startBtn.addEventListener("click", function() {
+    timeRemaining();
+    startScreen.setAttribute("class", "hide");
+    questDiv.removeAttribute("class");
+    giveQuestion();
+    startGame();
+});
