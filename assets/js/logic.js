@@ -15,63 +15,66 @@ var correctAnswers = 0;
 var questionNumber = 0;
 var totalTime = 180;
 var timeId;
-
-var questionsEl = document.getElementById("questions");
-var timerCounter = document.getElementById("timer");
-var startButton = document.querySelector("#start");
-var finalScore = document.getElementById("highscores");
+var scoresArr = [];
 
 
-startButton.addEventListener("click", startQuiz);
-
-var timeRemaining = function () {
-    totalTime--;
-    if (totalTime >= 0) {
-        timerCounter.textContent = totalTime;
-    } 
-
-    if (totalTime === 0) {
-        alert("Oh no, you've ran out of time, lets try again :)")
-        return
-    }
-}
-
-function startQuiz() {
-    timerCounter = setInterval(timeRemaining, 1000);
-    startButton.setAttribute("style", "display: none");
-    giveQuestion();
-}
+var startBtn = document.querySelector("#start");
+var startScreen = document.querySelector("#start-screen");
+var choices = document.querySelector(".choices");
+var questDiv = document.querySelector("#questions");
+var questTitle = document.querySelector("#question-title");
+var timerEl = document.querySelector("#time");
+var finalScreen = document.querySelector("#end-screen");
+var finalScore = document.querySelector("#final-score");
+var initialsEl = document.querySelector("#intials");
+var submitBtn = document.querySelector("submit");
 
 
-function giveQuestion() {
-    var currentQuestion = quizQuestions[questionNumber];
-    var questionH3 = document.createElement("h3")
-    questionH3.textContent = currentQuestion.question;
-    quiz.appendchild(questionH3);
-
-    currentQuestion.correctAnswerIndex.forEach((answer) => {
-        var answersEl = document.createElement("button")
-        answersEl.textContent = answer;
-        quiz.appendchild(answersEl)
-        answersEl.onclick = function () {
-            if (answer === currentQuestion.correctAnswerIndex) {
-                answerCorrect++
-                correctAnswerIndex.textContent = "That's Correct! :)";
-            } else
-                totalTime -= 10
-        }
-        questionNumber++;
-        if (questionNumber == quizQuestions.length) {
-            quiz.innerHTML = "";
+function timeRemaining () {
+    var timer = setInterval(function() {
+        totalTime--;
+        timerEl.textContent = totalTime;
+        if (totalTime <= 0) {
             clearInterval(timer);
-            document.getElementById("hide").removeAttribute("style");
+            questDiv.setAttribute("class", "hide");
+            finalScreen.removeAttribute("class");
         } else {
-            quiz.innerHTML = "";
-            giveQuestion()
+            finalScore.innerHTML = totalTime -1;
         }
-    });
-
+    }, 1000)
 }
+
+
+
+// function giveQuestion() {
+//     var currentQuestion = quizQuestions[questionNumber];
+//     var questionH3 = document.createElement("h3")
+//     questionH3.textContent = currentQuestion.question;
+//     start.appendchild(questionH3);
+
+//     currentQuestion.correctAnswerIndex.forEach((answer) => {
+//         var answersEl = document.createElement("button")
+//         answersEl.textContent = answer;
+//         start.appendchild(answersEl)
+//         answersEl.onclick = function () {
+//             if (answer === currentQuestion.correctAnswerIndex) {
+//                 answerCorrect++
+//                 correctAnswerIndex.textContent = "That's Correct! :)";
+//             } else
+//                 totalTime -= 10
+//         }
+//         questionNumber++;
+//         if (questionNumber == quizQuestions.length) {
+//             start.innerHTML = "";
+//             clearInterval(timer);
+//             document.getElementById("hide").removeAttribute("style");
+//         } else {
+//             start.innerHTML = "";
+//             giveQuestion()
+//         }
+//     });
+
+// }
 
 // function endQuiz() {
 //     clearInterval(timeId);
@@ -99,4 +102,10 @@ function giveQuestion() {
 // }
 
 
-
+// startButton.addEventListener("click", function() {
+//     time();
+//     startScreen.setAttribute("class", "hide");
+//     questDiv.removeAttribute("class");
+//     giveQuestion();
+    
+// });
