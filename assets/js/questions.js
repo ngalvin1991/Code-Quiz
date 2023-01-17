@@ -1,5 +1,5 @@
 
-var quizQuestions =[
+var quizQuestions = [
     {
         question: "Which of the following keywords is used to define a variable in Javascrip?",
         choices: ["var", "let", "Both A & B", "None of the above"],
