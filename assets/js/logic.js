@@ -22,7 +22,7 @@ var startBtn = document.querySelector("#start");
 var startScreen = document.querySelector("#start-screen");
 var choices = document.querySelector(".choices");
 var questDiv = document.querySelector("#questions");
-var questTitle = document.querySelector("#question-title");
+var questionTitle = document.querySelector("#question-title");
 var timerEl = document.querySelector("#time");
 var finalScreen = document.querySelector("#end-screen");
 var finalScore = document.querySelector("#final-score");
@@ -44,6 +44,16 @@ function timeRemaining () {
     }, 1000)
 }
 
+function giveQuestion () {
+    questionTitle.innerHTML = questions[questionNumber].question;
+    questions[questionNumber].correctAnswerIndex.forEach(function (answer) {
+        var button = document.createElement("button");
+        button.textContent = answer;
+        choices.appendChild(button);
+    });   
+    }
+
+    
 
 
 // function giveQuestion() {
