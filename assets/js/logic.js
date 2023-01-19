@@ -13,7 +13,7 @@
 
 var correctAnswers = 0;
 var questionNumber = 0;
-var totalTime = 180;
+var totalTime = 60;
 var timeId;
 var scoresArr = [];
 var remainingQuestions = questions.length;
@@ -48,8 +48,8 @@ function timeRemaining () {
 }
 
 function giveQuestion () {
-    questionTitle.innerHTML = questions[questionNumber].question;
-    questions[questionNumber].correctAnswerIndex.forEach(function (answer) {
+    questionTitle.innerHTML = quizQuestions[questionNumber].question;
+    quizQuestions[questionNumber].choices.forEach(function (answer) {
         var button = document.createElement("button");
         button.textContent = answer;
         choices.appendChild(button);
@@ -57,15 +57,15 @@ function giveQuestion () {
     }
 
 function startGame () {
-    choices.addEventListener("click", function (game) {
-        var gameTime = game.target;
+    choices.addEventListener("click", function (e) {
+        var gameTime = e.target;
         if ((gameTime.parentElement = choices)) {
-            for (var i = 0; i < questions[questionNumber].correctAnswerIndex.length; i++) {
-            if (Element.textContent === questions[questionNumber].correctAnswerIndex[i].text) {
-                var theAnswer = questions[questionNumber].correctAnswerIndex[i];
+            for (var i = 0; i < quizQuestions[questionNumber].choices.length; i++) {
+            if (gameTime.textContent === quizQuestions[questionNumber].choices[i].text) {
+                var theAnswer = quizQuestions[questionNumber].choices[i].correctAnswer;
             }
             }
-            if (theAnswer === correctAnswerIndex) {
+            if (theAnswer === correctAnswer) {
                 questionNumber++;
                 remainingQuestions--;
                 if (remainingQuestions > 0 && totalTime > 0) {
