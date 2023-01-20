@@ -11,14 +11,13 @@
 // WHEN the game is over
 // THEN I can save my initials and score
 
-var correctAnswers = 0;
+var quizText = document.createElement("p");
 var questionNumber = 0;
 var totalTime = 60;
 var timeId;
 var scoresArr = [];
-var remainingQuestions = questions.length;
-
-
+var remainingQuestions = quizQuestions.length;
+var scoreLink = document.querySelector(".scores").firstChild;
 var startBtn = document.querySelector("#start");
 var startScreen = document.querySelector("#start-screen");
 var choices = document.querySelector(".choices");
@@ -30,6 +29,7 @@ var finalScore = document.querySelector("#final-score");
 var initialsEl = document.querySelector("#intials");
 var submitBtn = document.querySelector("submit");
 var endScreen = document.querySelector("#end-screen")
+quizText.setAttribute("class", "feedback");
 
 
 
@@ -47,6 +47,7 @@ function timeRemaining () {
     }, 1000)
 }
 
+//This function presents the user with the questions. 
 function giveQuestion () {
     questionTitle.innerHTML = quizQuestions[questionNumber].question;
     quizQuestions[questionNumber].choices.forEach(function (answer) {
@@ -55,17 +56,45 @@ function giveQuestion () {
         choices.appendChild(button);
     });   
     }
+    
+ //functions to add text if a user gets the answer right or wrong.
+ //removeAnswerText renmoves the current question and moves on to the next one.   
+    function removeLastQuestion () {
+        choices.innerHTML = "";
+    }
 
+    function correctAnswerText() {
+        quizText.textContent = "That's Correct! Well Done :)";
+        questDiv.appendChild(quizText);
+    }
+    
+    function wrongAnswerText () {
+        quizText.textContent = "Sorry that's the wrong answer! :(";
+        questDiv.appendChild(quizText);
+    }
+    
+    function removeAnswerText () {
+        if (questDiv.contains(questDiv.children[3])) {
+            var removeText = questDiv.children[3];
+            questDiv.remove(removeText);
+        }
+    }
+    
+
+    //This function runs the quiz
 function startGame () {
+    removeAnswerText();
     choices.addEventListener("click", function (e) {
         var gameTime = e.target;
         if ((gameTime.parentElement = choices)) {
             for (var i = 0; i < quizQuestions[questionNumber].choices.length; i++) {
-            if (gameTime.textContent === quizQuestions[questionNumber].choices[i].text) {
+            if (gameTime.textContent === quizQuestions[questionNumber].choices[i].quizText) {
                 var theAnswer = quizQuestions[questionNumber].choices[i].correctAnswer;
             }
             }
-            if (theAnswer === correctAnswer) {
+            if (correctAnswer = true) {
+                correctAnswerText();
+                removeAnswerText();
                 questionNumber++;
                 remainingQuestions--;
                 if (remainingQuestions > 0 && totalTime > 0) {
@@ -73,7 +102,9 @@ function startGame () {
                 }else {
                     endGame();
                 }
-            } else if (theAnswer === "") {
+            } else if (correctAnswer = false) {
+                removeLastQuestion();
+                wrongAnswerText();
                 totalTime = totalTime - 10;
                 questionNumber++;
                 remainingQuestions--;
@@ -87,6 +118,7 @@ function startGame () {
     });
 }    
 
+
 function endGame () {
     questDiv.setAttribute("class", "hide");
     endScreen.removeAttribute("class");
@@ -94,62 +126,9 @@ function endGame () {
     totalTime = 1;
 }
 
-// function giveQuestion() {
-//     var currentQuestion = quizQuestions[questionNumber];
-//     var questionH3 = document.createElement("h3")
-//     questionH3.textContent = currentQuestion.question;
-//     start.appendchild(questionH3);
+//Event Listeners 
 
-//     currentQuestion.correctAnswerIndex.forEach((answer) => {
-//         var answersEl = document.createElement("button")
-//         answersEl.textContent = answer;
-//         start.appendchild(answersEl)
-//         answersEl.onclick = function () {
-//             if (answer === currentQuestion.correctAnswerIndex) {
-//                 answerCorrect++
-//                 correctAnswerIndex.textContent = "That's Correct! :)";
-//             } else
-//                 totalTime -= 10
-//         }
-//         questionNumber++;
-//         if (questionNumber == quizQuestions.length) {
-//             start.innerHTML = "";
-//             clearInterval(timer);
-//             document.getElementById("hide").removeAttribute("style");
-//         } else {
-//             start.innerHTML = "";
-//             giveQuestion()
-//         }
-//     });
-
-// }
-
-// function endQuiz() {
-//     clearInterval(timeId);
-//     var finalScreenEl = document.getElementById("end-screen");
-//     finalScreenEl.removeAttribute("class");
-//     var totalScoreEl = document.getElementById("final-score");
-//     totalScoreEl.textContent = time;
-//     questionsEl.setAttribute("class", "hide");
-
-// }
-
-
-// //This function saves the users name and score in local storage. 
-// function saveHighScores() {
-//     var initials = initialsEl.value.trim();
-//     if (initials !== "") {
-//         var highscore = JSON.parse(window.localStorage.getItem("highscore")) || [];
-//         var yourScore = {
-//             score: time,
-//             name: initials
-//         };
-//         highscore.push(yourScore);
-//         window.localStorage.setItem("highscore", JSON.stringify(highscore));
-//     }
-// }
-
-
+// start button event listener.
 startBtn.addEventListener("click", function() {
     timeRemaining();
     startScreen.setAttribute("class", "hide");
@@ -157,3 +136,16 @@ startBtn.addEventListener("click", function() {
     giveQuestion();
     startGame();
 });
+
+//submit button event listener: 
+submitBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    var userScore = finalScore.innerHTML;
+    var userInitials = initialsEl.value; 
+    var scoresArrEl = userInitials + " - " + userScore;
+    if (userInitials.length > 0 && userInitials.length < 3) {
+        scoresArr.push(scoresArrEl)
+    }
+})
+
+
