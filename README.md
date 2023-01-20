@@ -3,22 +3,24 @@
 Here is the deployed website link: 
 https://ngalvin1991.github.io/Code-Quiz/
 
-##User Story 
+## User Story 
+
 AS A coding boot camp student
 I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
 SO THAT I can gauge my progress compared to my peers
 
-##Description
+## Description
+
 Code Quiz is a browser run application allowing the user to answer a variety of 
 questions about coding in 60 seconds, if the user answers a question incorrectly
 then the timer reduces by 10 seconds each time. 
 Once all questions have been answered, or the user has run out of time, a score is 
 generated. The user then has to put their initials (max 3 letters) into the text field, which will then save the score to the highscores page and the local storage.
 
-##Installation 
+## Installation 
 The application will run on any web browser using the link above. 
 
-##Usage 
+## Usage 
 Below are some example of the functionality of the webpage: 
 
 Main webpage before questions are revealed:
