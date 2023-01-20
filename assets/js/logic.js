@@ -11,12 +11,11 @@
 // WHEN the game is over
 // THEN I can save my initials and score
 
-var quizText = document.createElement("p");
+
 var questionNumber = 0;
 var totalTime = 60;
 var scoresArr = [];
 var remainingQuestions = quizQuestions.length;
-var scoreLink = document.querySelector(".scores").firstChild;
 var startBtn = document.querySelector("#start");
 var startScreen = document.querySelector("#start-screen");
 var choices = document.querySelector(".choices");
@@ -25,13 +24,14 @@ var questionTitle = document.querySelector("#question-title");
 var timerEl = document.querySelector("#time");
 var finalScreen = document.querySelector("#end-screen");
 var finalScore = document.querySelector("#final-score");
-var initialsEl = document.querySelector("#intials");
-var submitBtn = document.querySelector("submit");
-var endScreen = document.querySelector("#end-screen")
+var initialsEl = document.querySelector("#initials");
+var submitBtn = document.querySelector("#submit");
+var endScreen = document.querySelector("#end-screen");
+var scoreLink = document.querySelector('.scores').firstChild;
+var quizText = document.createElement("p");
 quizText.setAttribute("class", "feedback");
 
-
-
+//function for the timer. 
 function timeRemaining () {
     var timer = setInterval(function() {
         totalTime--;
@@ -82,7 +82,7 @@ function giveQuestion () {
     //This function runs the quiz
 function startGame () {
     removeAnswerText();
-    choices.addEventListener("click", function (e) {
+    choices.addEventListener("click", function (e) { //targets element. 
         var gameTime = e.target;
         if ((gameTime.parentElement = choices)) {
             for (var i = 0; i < quizQuestions[questionNumber].choices.length; i++) {
@@ -123,11 +123,19 @@ function endGame () {
     finalScore.innerHTML = totalTime;
     totalTime = 1;
 }
-
-//Local Storage:
+//Local Storage
 function storeUserScores () {
     localStorage.setItem("Scores", JSON.stringify(scoresArr));
 }
+
+function getScores () {
+    var storedUserScores = JSON.parse(localStorage.getItem("Scores"));
+    if (storedUserScores) {   
+        scoresArr = storedUserScores;
+    }
+}
+getScores();
+
 
 //Event Listeners:
 // start button event listener.
@@ -140,14 +148,17 @@ startBtn.addEventListener("click", function() {
 });
 
 //submit button event listener: 
-submitBtn.addEventListener("click", function (e) {
-    e.preventDefault();
+submitBtn.addEventListener("click", function () {
     var userScore = finalScore.innerHTML;
     var userInitials = initialsEl.value; 
-    var scoresArrEl = userInitials + " - " + userScore;
-    if (userInitials.length > 0 && userInitials.length < 3) {
+    var scoresArrEl = userInitials + " your result is: " + userScore;
+    if (userInitials.length > 0 && userInitials.length < 4) {
         scoresArr.push(scoresArrEl)
+        storeUserScores();
+        scoreLink.click();
+    } else {
+        alert("Please enter 3 initials only!");
     }
-})
+});
 
 

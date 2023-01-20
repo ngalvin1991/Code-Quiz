@@ -9,7 +9,4 @@ for (var i = 0; i < scoresArr.length; i++) {
     scoresLi.appendChild(list);
 }
 
-clearBtn.addEventListener("click", function () {
-    scoresLi.remove();
-    localStorage.clear();
-});
+
