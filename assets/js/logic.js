@@ -14,7 +14,6 @@
 var quizText = document.createElement("p");
 var questionNumber = 0;
 var totalTime = 60;
-var timeId;
 var scoresArr = [];
 var remainingQuestions = quizQuestions.length;
 var scoreLink = document.querySelector(".scores").firstChild;
@@ -52,16 +51,12 @@ function giveQuestion () {
     questionTitle.innerHTML = quizQuestions[questionNumber].question;
     quizQuestions[questionNumber].choices.forEach(function (answer) {
         var button = document.createElement("button");
-        button.textContent = answer;
+        button.textContent = answer.quizText;
         choices.appendChild(button);
     });   
     }
     
  //functions to add text if a user gets the answer right or wrong.
- //removeAnswerText renmoves the current question and moves on to the next one.   
-    function removeLastQuestion () {
-        choices.innerHTML = "";
-    }
 
     function correctAnswerText() {
         quizText.textContent = "That's Correct! Well Done :)";
@@ -74,12 +69,15 @@ function giveQuestion () {
     }
     
     function removeAnswerText () {
-        if (questDiv.contains(questDiv.children[3])) {
-            var removeText = questDiv.children[3];
+        if (questDiv.contains(questDiv.children[2])) {
+            var removeText = questDiv.children[2];
             questDiv.remove(removeText);
         }
     }
-    
+
+    function removeLastQuestion () {
+        choices.innerHTML = "";
+    }
 
     //This function runs the quiz
 function startGame () {
@@ -92,9 +90,9 @@ function startGame () {
                 var theAnswer = quizQuestions[questionNumber].choices[i].correctAnswer;
             }
             }
-            if (correctAnswer = true) {
+            if (theAnswer === true) {
                 correctAnswerText();
-                removeAnswerText();
+                removeLastQuestion();
                 questionNumber++;
                 remainingQuestions--;
                 if (remainingQuestions > 0 && totalTime > 0) {
@@ -102,7 +100,7 @@ function startGame () {
                 }else {
                     endGame();
                 }
-            } else if (correctAnswer = false) {
+            } else if (theAnswer === false) {
                 removeLastQuestion();
                 wrongAnswerText();
                 totalTime = totalTime - 10;
@@ -126,8 +124,12 @@ function endGame () {
     totalTime = 1;
 }
 
-//Event Listeners 
+//Local Storage:
+function storeUserScores () {
+    localStorage.setItem("Scores", JSON.stringify(scoresArr));
+}
 
+//Event Listeners:
 // start button event listener.
 startBtn.addEventListener("click", function() {
     timeRemaining();
