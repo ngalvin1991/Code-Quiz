@@ -1,7 +1,7 @@
 
 var quizQuestions = [
     {
-        question: "Which of the following keywords is used to define a variable in Javascrip?",
+        question: "Which of the following keywords is used to define a variable in Javascript?",
         choices: [
             { quizText: "var", correctAnswer: false },
             { quizText: "let", correctAnswer: false },
